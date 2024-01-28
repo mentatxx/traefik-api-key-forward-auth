@@ -1,0 +1,155 @@
+swagger: "2.0"
+info:
+  description: "API key-based authenticator for Traefik."
+  version: "1.0.0"
+  title: "traefik-api-key-forward-auth"
+basePath: "/api"
+tags:
+- name: "key"
+  description: "Manage API keys"
+schemes:
+- "https"
+- "http"
+paths:
+  /key:
+    post:
+      tags:
+      - "key"
+      summary: "Add a new API key"
+      description: ""
+      operationId: "addKey"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Pet object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/CreateKey"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/CreateKeyResult"
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthenticated
+      security:
+      - management_auth: []
+    get:
+      tags:
+      - "key"
+      summary: "Get filtered key list"
+      description: ""
+      operationId: "getKeys"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "query"
+        type: "string"
+        name: "filter"
+        description: "JSON object with filter values"
+        required: true
+      - in: "query"
+        type: "number"
+        name: "limit"
+        description: "Default limit value is 50"
+        required: false
+      - in: "query"
+        type: "string"
+        name: "after"
+        description: "Cursor, last item ID"
+        required: false
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/GetKeysResult"
+        "400":
+          description: "Invalid request supplied"
+      security:
+      - management_auth: []
+  /key/{id}:
+    delete:
+      tags:
+      - "key"
+      summary: "Get filtered key list"
+      description: ""
+      operationId: "deleteKey"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        type: "string"
+        name: "id"
+        description: "Key id"
+        required: true
+      responses:
+        "200":
+          description: "successful operation"
+        "400":
+          description: "Invalid request supplied"
+      security:
+      - management_auth: []
+    
+
+securityDefinitions:
+  management_auth:
+    type: "apiKey"
+    name: "X-Api-Key"
+    in: "header"
+    
+definitions:
+  CreateKey:
+    type: "object"
+    properties:
+      projectId:
+        type: "string"
+        description: "Project ID (optional)"
+      organizationId:
+        type: "string"
+        description: "Organization ID (optional)"
+      userId:
+        type: "string"
+        description: "User ID (optional)"
+      attributes:
+        type: "object"
+        description: "Custom attributes (optional)"
+  CreateKeyResult:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Database record id"
+      key:
+        type: "string"
+        description: "Unmasked API key"
+  GetKeysResult:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Database record id"
+      key:
+        type: "string"
+        description: "Masked API key (asterisks in the middle)"
+      projectId:
+        type: "string"
+        description: "Project ID (optional)"
+      organizationId:
+        type: "string"
+        description: "Organization ID (optional)"
+      userId:
+        type: "string"
+        description: "User ID (optional)"
+      attributes:
+        type: "object"
+        description: "Custom attributes (optional)"
