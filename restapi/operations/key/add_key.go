@@ -9,19 +9,21 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
+
+	"github.com/mentatxx/traefik-api-key-forward-auth/models"
 )
 
 // AddKeyHandlerFunc turns a function with the right signature into a add key handler
-type AddKeyHandlerFunc func(AddKeyParams, *AuthPrincipal) middleware.Responder
+type AddKeyHandlerFunc func(AddKeyParams, *models.AuthPrincipal) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn AddKeyHandlerFunc) Handle(params AddKeyParams, principal *AuthPrincipal) middleware.Responder {
+func (fn AddKeyHandlerFunc) Handle(params AddKeyParams, principal *models.AuthPrincipal) middleware.Responder {
 	return fn(params, principal)
 }
 
 // AddKeyHandler interface for that can handle valid add key params
 type AddKeyHandler interface {
-	Handle(AddKeyParams, *AuthPrincipal) middleware.Responder
+	Handle(AddKeyParams, *models.AuthPrincipal) middleware.Responder
 }
 
 // NewAddKey creates a new http.Handler for the add key operation
@@ -53,9 +55,9 @@ func (o *AddKey) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if aCtx != nil {
 		*r = *aCtx
 	}
-	var principal *AuthPrincipal
+	var principal *models.AuthPrincipal
 	if uprinc != nil {
-		principal = uprinc.(*AuthPrincipal) // this is really a AuthPrincipal, I promise
+		principal = uprinc.(*models.AuthPrincipal) // this is really a models.AuthPrincipal, I promise
 	}
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

@@ -10,6 +10,10 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
+	"github.com/mentatxx/traefik-api-key-forward-auth/internal/app"
+	"github.com/mentatxx/traefik-api-key-forward-auth/internal/configuration"
+	"github.com/mentatxx/traefik-api-key-forward-auth/internal/database"
+	"github.com/mentatxx/traefik-api-key-forward-auth/models"
 	"github.com/mentatxx/traefik-api-key-forward-auth/restapi/operations"
 	"github.com/mentatxx/traefik-api-key-forward-auth/restapi/operations/key"
 )
@@ -40,7 +44,7 @@ func configureAPI(api *operations.TraefikAPIKeyForwardAuthAPI) http.Handler {
 
 	// Applies when the "X-Api-Key" header is set
 	if api.ManagementAuthAuth == nil {
-		api.ManagementAuthAuth = func(token string) (*AuthPrincipal, error) {
+		api.ManagementAuthAuth = func(token string) (*models.AuthPrincipal, error) {
 			return nil, errors.NotImplemented("api key auth (management_auth) X-Api-Key from header param [X-Api-Key] has not yet been implemented")
 		}
 	}
@@ -52,17 +56,17 @@ func configureAPI(api *operations.TraefikAPIKeyForwardAuthAPI) http.Handler {
 	// api.APIAuthorizer = security.Authorized()
 
 	if api.KeyAddKeyHandler == nil {
-		api.KeyAddKeyHandler = key.AddKeyHandlerFunc(func(params key.AddKeyParams, principal *AuthPrincipal) middleware.Responder {
+		api.KeyAddKeyHandler = key.AddKeyHandlerFunc(func(params key.AddKeyParams, principal *models.AuthPrincipal) middleware.Responder {
 			return middleware.NotImplemented("operation key.AddKey has not yet been implemented")
 		})
 	}
 	if api.KeyDeleteKeyHandler == nil {
-		api.KeyDeleteKeyHandler = key.DeleteKeyHandlerFunc(func(params key.DeleteKeyParams, principal *AuthPrincipal) middleware.Responder {
+		api.KeyDeleteKeyHandler = key.DeleteKeyHandlerFunc(func(params key.DeleteKeyParams, principal *models.AuthPrincipal) middleware.Responder {
 			return middleware.NotImplemented("operation key.DeleteKey has not yet been implemented")
 		})
 	}
 	if api.KeyGetKeysHandler == nil {
-		api.KeyGetKeysHandler = key.GetKeysHandlerFunc(func(params key.GetKeysParams, principal *AuthPrincipal) middleware.Responder {
+		api.KeyGetKeysHandler = key.GetKeysHandlerFunc(func(params key.GetKeysParams, principal *models.AuthPrincipal) middleware.Responder {
 			return middleware.NotImplemented("operation key.GetKeys has not yet been implemented")
 		})
 	}
@@ -72,6 +76,19 @@ func configureAPI(api *operations.TraefikAPIKeyForwardAuthAPI) http.Handler {
 	api.ServerShutdown = func() {}
 
 	return setupGlobalMiddleware(api.Serve(setupMiddlewares))
+}
+
+func configureApp() {
+	// Initialize the app here
+	app := app.Get()
+	config := configuration.New()
+	app.Config = config
+	gormDb, err := database.Connect(config)
+	if err != nil {
+		panic(err)
+	}
+	app.DB = gormDb
+
 }
 
 // The TLS configuration before HTTPS server starts.

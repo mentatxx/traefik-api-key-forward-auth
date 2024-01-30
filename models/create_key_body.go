@@ -12,10 +12,10 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// CreateKey create key
+// CreateKeyBody create key body
 //
-// swagger:model CreateKey
-type CreateKey struct {
+// swagger:model CreateKeyBody
+type CreateKeyBody struct {
 
 	// Custom attributes (optional)
 	Attributes interface{} `json:"attributes,omitempty"`
@@ -30,18 +30,18 @@ type CreateKey struct {
 	UserID string `json:"userId,omitempty"`
 }
 
-// Validate validates this create key
-func (m *CreateKey) Validate(formats strfmt.Registry) error {
+// Validate validates this create key body
+func (m *CreateKeyBody) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this create key based on context it is used
-func (m *CreateKey) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+// ContextValidate validates this create key body based on context it is used
+func (m *CreateKeyBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (m *CreateKey) MarshalBinary() ([]byte, error) {
+func (m *CreateKeyBody) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -49,8 +49,8 @@ func (m *CreateKey) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *CreateKey) UnmarshalBinary(b []byte) error {
-	var res CreateKey
+func (m *CreateKeyBody) UnmarshalBinary(b []byte) error {
+	var res CreateKeyBody
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

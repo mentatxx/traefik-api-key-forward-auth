@@ -38,7 +38,7 @@ type AddKeyParams struct {
 	  Required: true
 	  In: body
 	*/
-	Body *models.CreateKey
+	Body *models.CreateKeyBody
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -52,7 +52,7 @@ func (o *AddKeyParams) BindRequest(r *http.Request, route *middleware.MatchedRou
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.CreateKey
+		var body models.CreateKeyBody
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			if err == io.EOF {
 				res = append(res, errors.Required("body", "body", ""))

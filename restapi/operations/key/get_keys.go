@@ -9,19 +9,21 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
+
+	"github.com/mentatxx/traefik-api-key-forward-auth/models"
 )
 
 // GetKeysHandlerFunc turns a function with the right signature into a get keys handler
-type GetKeysHandlerFunc func(GetKeysParams, *AuthPrincipal) middleware.Responder
+type GetKeysHandlerFunc func(GetKeysParams, *models.AuthPrincipal) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn GetKeysHandlerFunc) Handle(params GetKeysParams, principal *AuthPrincipal) middleware.Responder {
+func (fn GetKeysHandlerFunc) Handle(params GetKeysParams, principal *models.AuthPrincipal) middleware.Responder {
 	return fn(params, principal)
 }
 
 // GetKeysHandler interface for that can handle valid get keys params
 type GetKeysHandler interface {
-	Handle(GetKeysParams, *AuthPrincipal) middleware.Responder
+	Handle(GetKeysParams, *models.AuthPrincipal) middleware.Responder
 }
 
 // NewGetKeys creates a new http.Handler for the get keys operation
@@ -53,9 +55,9 @@ func (o *GetKeys) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if aCtx != nil {
 		*r = *aCtx
 	}
-	var principal *AuthPrincipal
+	var principal *models.AuthPrincipal
 	if uprinc != nil {
-		principal = uprinc.(*AuthPrincipal) // this is really a AuthPrincipal, I promise
+		principal = uprinc.(*models.AuthPrincipal) // this is really a models.AuthPrincipal, I promise
 	}
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

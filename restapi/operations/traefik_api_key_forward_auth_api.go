@@ -19,6 +19,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
+	"github.com/mentatxx/traefik-api-key-forward-auth/models"
 	"github.com/mentatxx/traefik-api-key-forward-auth/restapi/operations/key"
 )
 
@@ -44,18 +45,18 @@ func NewTraefikAPIKeyForwardAuthAPI(spec *loads.Document) *TraefikAPIKeyForwardA
 
 		JSONProducer: runtime.JSONProducer(),
 
-		KeyAddKeyHandler: key.AddKeyHandlerFunc(func(params key.AddKeyParams, principal *AuthPrincipal) middleware.Responder {
+		KeyAddKeyHandler: key.AddKeyHandlerFunc(func(params key.AddKeyParams, principal *models.AuthPrincipal) middleware.Responder {
 			return middleware.NotImplemented("operation key.AddKey has not yet been implemented")
 		}),
-		KeyDeleteKeyHandler: key.DeleteKeyHandlerFunc(func(params key.DeleteKeyParams, principal *AuthPrincipal) middleware.Responder {
+		KeyDeleteKeyHandler: key.DeleteKeyHandlerFunc(func(params key.DeleteKeyParams, principal *models.AuthPrincipal) middleware.Responder {
 			return middleware.NotImplemented("operation key.DeleteKey has not yet been implemented")
 		}),
-		KeyGetKeysHandler: key.GetKeysHandlerFunc(func(params key.GetKeysParams, principal *AuthPrincipal) middleware.Responder {
+		KeyGetKeysHandler: key.GetKeysHandlerFunc(func(params key.GetKeysParams, principal *models.AuthPrincipal) middleware.Responder {
 			return middleware.NotImplemented("operation key.GetKeys has not yet been implemented")
 		}),
 
 		// Applies when the "X-Api-Key" header is set
-		ManagementAuthAuth: func(token string) (*AuthPrincipal, error) {
+		ManagementAuthAuth: func(token string) (*models.AuthPrincipal, error) {
 			return nil, errors.NotImplemented("api key auth (management_auth) X-Api-Key from header param [X-Api-Key] has not yet been implemented")
 		},
 		// default authorizer is authorized meaning no requests are blocked
@@ -98,7 +99,7 @@ type TraefikAPIKeyForwardAuthAPI struct {
 
 	// ManagementAuthAuth registers a function that takes a token and returns a principal
 	// it performs authentication based on an api key X-Api-Key provided in the header
-	ManagementAuthAuth func(string) (*AuthPrincipal, error)
+	ManagementAuthAuth func(string) (*models.AuthPrincipal, error)
 
 	// APIAuthorizer provides access control (ACL/RBAC/ABAC) by providing access to the request and authenticated principal
 	APIAuthorizer runtime.Authorizer

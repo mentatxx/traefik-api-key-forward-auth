@@ -9,19 +9,21 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
+
+	"github.com/mentatxx/traefik-api-key-forward-auth/models"
 )
 
 // DeleteKeyHandlerFunc turns a function with the right signature into a delete key handler
-type DeleteKeyHandlerFunc func(DeleteKeyParams, *AuthPrincipal) middleware.Responder
+type DeleteKeyHandlerFunc func(DeleteKeyParams, *models.AuthPrincipal) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn DeleteKeyHandlerFunc) Handle(params DeleteKeyParams, principal *AuthPrincipal) middleware.Responder {
+func (fn DeleteKeyHandlerFunc) Handle(params DeleteKeyParams, principal *models.AuthPrincipal) middleware.Responder {
 	return fn(params, principal)
 }
 
 // DeleteKeyHandler interface for that can handle valid delete key params
 type DeleteKeyHandler interface {
-	Handle(DeleteKeyParams, *AuthPrincipal) middleware.Responder
+	Handle(DeleteKeyParams, *models.AuthPrincipal) middleware.Responder
 }
 
 // NewDeleteKey creates a new http.Handler for the delete key operation
@@ -53,9 +55,9 @@ func (o *DeleteKey) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if aCtx != nil {
 		*r = *aCtx
 	}
-	var principal *AuthPrincipal
+	var principal *models.AuthPrincipal
 	if uprinc != nil {
-		principal = uprinc.(*AuthPrincipal) // this is really a AuthPrincipal, I promise
+		principal = uprinc.(*models.AuthPrincipal) // this is really a models.AuthPrincipal, I promise
 	}
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

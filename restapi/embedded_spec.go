@@ -105,7 +105,7 @@ func init() {
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/CreateKey"
+              "$ref": "#/definitions/CreateKeyBody"
             }
           }
         ],
@@ -164,7 +164,7 @@ func init() {
     }
   },
   "definitions": {
-    "CreateKey": {
+    "CreateKeyBody": {
       "type": "object",
       "properties": {
         "attributes": {
@@ -330,7 +330,7 @@ func init() {
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/CreateKey"
+              "$ref": "#/definitions/CreateKeyBody"
             }
           }
         ],
@@ -389,7 +389,7 @@ func init() {
     }
   },
   "definitions": {
-    "CreateKey": {
+    "CreateKeyBody": {
       "type": "object",
       "properties": {
         "attributes": {

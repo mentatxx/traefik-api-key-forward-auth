@@ -89,7 +89,7 @@ Configuration is provided with environment variables:
 * API_SECRET - (required) authentication token for management endpoints
 * DATABASE_URL - (required) URL for database to store API Keys
 * CACHE_TYPE - (optional, default = "memory") Type of cache to use. Allowed values = no, memory, redis
-* CACHE_MEMORY_LIMIT - (optional) Maximum number of keys to cache
+* CACHE_MEMORY_LIMIT - (optional) Maximum number of keys to cache, default = 100000
 * CACHE_REDIS_URL - (optional) URL of Redis cache
 * FAILS_TO_BAN - (optional) Number per minute of failed tries to authenticate before ban per IP (default = 10)
 * BAN_DURATION - (optional) Ban duration (in seconds, default = 1800)
