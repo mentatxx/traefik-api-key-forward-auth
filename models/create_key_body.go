@@ -21,13 +21,13 @@ type CreateKeyBody struct {
 	Attributes interface{} `json:"attributes,omitempty"`
 
 	// Organization ID (optional)
-	OrganizationID string `json:"organizationId,omitempty"`
+	OrganizationID *string `json:"organizationId,omitempty"`
 
 	// Project ID (optional)
-	ProjectID string `json:"projectId,omitempty"`
+	ProjectID *string `json:"projectId,omitempty"`
 
 	// User ID (optional)
-	UserID string `json:"userId,omitempty"`
+	UserID *string `json:"userId,omitempty"`
 }
 
 // Validate validates this create key body

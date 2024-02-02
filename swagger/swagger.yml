@@ -25,8 +25,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "Pet object that needs to be added to the store"
-        required: true
+        description: "Key object that needs to be added to the store"
         schema:
           $ref: "#/definitions/CreateKeyBody"
       responses:
@@ -114,15 +113,19 @@ definitions:
       projectId:
         type: "string"
         description: "Project ID (optional)"
+        x-nullable: true
       organizationId:
         type: "string"
         description: "Organization ID (optional)"
+        x-nullable: true
       userId:
         type: "string"
         description: "User ID (optional)"
+        x-nullable: true
       attributes:
         type: "object"
         description: "Custom attributes (optional)"
+        x-nullable: true
   CreateKeyResult:
     type: "object"
     properties:

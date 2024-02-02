@@ -8,7 +8,6 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/runtime/middleware"
 
 	"github.com/mentatxx/traefik-api-key-forward-auth/internal/app"
 	"github.com/mentatxx/traefik-api-key-forward-auth/internal/configuration"
@@ -25,6 +24,8 @@ func configureFlags(api *operations.TraefikAPIKeyForwardAuthAPI) {
 }
 
 func configureAPI(api *operations.TraefikAPIKeyForwardAuthAPI) http.Handler {
+	configureApp()
+
 	// configure the api here
 	api.ServeError = errors.ServeError
 
@@ -43,10 +44,14 @@ func configureAPI(api *operations.TraefikAPIKeyForwardAuthAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	// Applies when the "X-Api-Key" header is set
-	if api.ManagementAuthAuth == nil {
-		api.ManagementAuthAuth = func(token string) (*models.AuthPrincipal, error) {
-			return nil, errors.NotImplemented("api key auth (management_auth) X-Api-Key from header param [X-Api-Key] has not yet been implemented")
+	api.ManagementAuthAuth = func(token string) (*models.AuthPrincipal, error) {
+		config := app.Get().Config
+		if config.ApiSecret == token {
+			return &models.AuthPrincipal{
+				Authenticated: true,
+			}, nil
 		}
+		return nil, errors.Unauthenticated("http")
 	}
 
 	// Set your custom authorizer if needed. Default one is security.Authorized()
@@ -55,21 +60,9 @@ func configureAPI(api *operations.TraefikAPIKeyForwardAuthAPI) http.Handler {
 	// Example:
 	// api.APIAuthorizer = security.Authorized()
 
-	if api.KeyAddKeyHandler == nil {
-		api.KeyAddKeyHandler = key.AddKeyHandlerFunc(func(params key.AddKeyParams, principal *models.AuthPrincipal) middleware.Responder {
-			return middleware.NotImplemented("operation key.AddKey has not yet been implemented")
-		})
-	}
-	if api.KeyDeleteKeyHandler == nil {
-		api.KeyDeleteKeyHandler = key.DeleteKeyHandlerFunc(func(params key.DeleteKeyParams, principal *models.AuthPrincipal) middleware.Responder {
-			return middleware.NotImplemented("operation key.DeleteKey has not yet been implemented")
-		})
-	}
-	if api.KeyGetKeysHandler == nil {
-		api.KeyGetKeysHandler = key.GetKeysHandlerFunc(func(params key.GetKeysParams, principal *models.AuthPrincipal) middleware.Responder {
-			return middleware.NotImplemented("operation key.GetKeys has not yet been implemented")
-		})
-	}
+	api.KeyAddKeyHandler = key.AddKeyHandlerFunc(key.AddKeyHandlerImpl)
+	api.KeyDeleteKeyHandler = key.DeleteKeyHandlerFunc(key.DeleteKeyHandlerImpl)
+	api.KeyGetKeysHandler = key.GetKeysHandlerFunc(key.GetKeysHandlerImpl)
 
 	api.PreServerShutdown = func() {}
 

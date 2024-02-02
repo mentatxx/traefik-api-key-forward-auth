@@ -100,10 +100,9 @@ func init() {
         "operationId": "addKey",
         "parameters": [
           {
-            "description": "Pet object that needs to be added to the store",
+            "description": "Key object that needs to be added to the store",
             "name": "body",
             "in": "body",
-            "required": true,
             "schema": {
               "$ref": "#/definitions/CreateKeyBody"
             }
@@ -169,19 +168,23 @@ func init() {
       "properties": {
         "attributes": {
           "description": "Custom attributes (optional)",
-          "type": "object"
+          "type": "object",
+          "x-nullable": true
         },
         "organizationId": {
           "description": "Organization ID (optional)",
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "projectId": {
           "description": "Project ID (optional)",
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "userId": {
           "description": "User ID (optional)",
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         }
       }
     },
@@ -325,10 +328,9 @@ func init() {
         "operationId": "addKey",
         "parameters": [
           {
-            "description": "Pet object that needs to be added to the store",
+            "description": "Key object that needs to be added to the store",
             "name": "body",
             "in": "body",
-            "required": true,
             "schema": {
               "$ref": "#/definitions/CreateKeyBody"
             }
@@ -394,19 +396,23 @@ func init() {
       "properties": {
         "attributes": {
           "description": "Custom attributes (optional)",
-          "type": "object"
+          "type": "object",
+          "x-nullable": true
         },
         "organizationId": {
           "description": "Organization ID (optional)",
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "projectId": {
           "description": "Project ID (optional)",
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "userId": {
           "description": "User ID (optional)",
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         }
       }
     },

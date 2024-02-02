@@ -7,6 +7,7 @@
 *.dll
 *.so
 *.dylib
+cmd/traefik-api-key-forward-auth-server/__*
 
 # Test binary, built with `go test -c`
 *.test
@@ -19,3 +20,7 @@
 
 # Go workspace file
 go.work
+
+# Local files
+local/
+.env

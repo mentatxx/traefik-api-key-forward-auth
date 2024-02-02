@@ -6,7 +6,6 @@ package key
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"io"
 	"net/http"
 
 	"github.com/go-openapi/errors"
@@ -34,8 +33,7 @@ type AddKeyParams struct {
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
-	/*Pet object that needs to be added to the store
-	  Required: true
+	/*Key object that needs to be added to the store
 	  In: body
 	*/
 	Body *models.CreateKeyBody
@@ -54,11 +52,7 @@ func (o *AddKeyParams) BindRequest(r *http.Request, route *middleware.MatchedRou
 		defer r.Body.Close()
 		var body models.CreateKeyBody
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
-			if err == io.EOF {
-				res = append(res, errors.Required("body", "body", ""))
-			} else {
-				res = append(res, errors.NewParseError("body", "body", "", err))
-			}
+			res = append(res, errors.NewParseError("body", "body", "", err))
 		} else {
 			// validate body object
 			if err := body.Validate(route.Formats); err != nil {
@@ -74,8 +68,6 @@ func (o *AddKeyParams) BindRequest(r *http.Request, route *middleware.MatchedRou
 				o.Body = &body
 			}
 		}
-	} else {
-		res = append(res, errors.Required("body", "body", ""))
 	}
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
