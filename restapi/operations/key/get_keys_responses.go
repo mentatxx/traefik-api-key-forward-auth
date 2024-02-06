@@ -26,7 +26,7 @@ type GetKeysOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.GetKeysResult `json:"body,omitempty"`
+	Payload []*models.GetKeysResult `json:"body,omitempty"`
 }
 
 // NewGetKeysOK creates GetKeysOK with default headers values
@@ -36,13 +36,13 @@ func NewGetKeysOK() *GetKeysOK {
 }
 
 // WithPayload adds the payload to the get keys o k response
-func (o *GetKeysOK) WithPayload(payload *models.GetKeysResult) *GetKeysOK {
+func (o *GetKeysOK) WithPayload(payload []*models.GetKeysResult) *GetKeysOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get keys o k response
-func (o *GetKeysOK) SetPayload(payload *models.GetKeysResult) {
+func (o *GetKeysOK) SetPayload(payload []*models.GetKeysResult) {
 	o.Payload = payload
 }
 
@@ -50,11 +50,14 @@ func (o *GetKeysOK) SetPayload(payload *models.GetKeysResult) {
 func (o *GetKeysOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
 	rw.WriteHeader(200)
-	if o.Payload != nil {
-		payload := o.Payload
-		if err := producer.Produce(rw, payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
+	payload := o.Payload
+	if payload == nil {
+		// return empty array
+		payload = make([]*models.GetKeysResult, 0, 50)
+	}
+
+	if err := producer.Produce(rw, payload); err != nil {
+		panic(err) // let the recovery middleware deal with this
 	}
 }
 

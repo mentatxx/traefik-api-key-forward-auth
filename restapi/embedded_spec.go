@@ -73,7 +73,10 @@ func init() {
           "200": {
             "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/GetKeysResult"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetKeysResult"
+              }
             }
           },
           "400": {
@@ -218,15 +221,18 @@ func init() {
         },
         "organizationId": {
           "description": "Organization ID (optional)",
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "projectId": {
           "description": "Project ID (optional)",
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "userId": {
           "description": "User ID (optional)",
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         }
       }
     }
@@ -301,7 +307,10 @@ func init() {
           "200": {
             "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/GetKeysResult"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetKeysResult"
+              }
             }
           },
           "400": {
@@ -446,15 +455,18 @@ func init() {
         },
         "organizationId": {
           "description": "Organization ID (optional)",
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "projectId": {
           "description": "Project ID (optional)",
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "userId": {
           "description": "User ID (optional)",
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         }
       }
     }

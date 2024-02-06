@@ -3,9 +3,11 @@ package database
 import (
 	"log"
 	"os"
+	"time"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 
 	"github.com/go-redis/redis/v8"
 	"github.com/mentatxx/traefik-api-key-forward-auth/internal/configuration"
@@ -48,8 +50,20 @@ func migrateWithLock(configuration *configuration.Configuration, database *gorm.
 }
 
 func Connect(config *configuration.Configuration) (*gorm.DB, error) {
+	newLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		logger.Config{
+			SlowThreshold:             time.Second, // Slow SQL threshold
+			LogLevel:                  logger.Info, // Log level
+			IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
+			ParameterizedQueries:      true,        // Don't include params in the SQL log
+			Colorful:                  true,        // Disable color
+		},
+	)
 	// url := "host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
-	db, err := gorm.Open(postgres.Open(config.Database.Url), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(config.Database.Url), &gorm.Config{
+		Logger: newLogger,
+	})
 	if err != nil {
 		return nil, err
 	}
