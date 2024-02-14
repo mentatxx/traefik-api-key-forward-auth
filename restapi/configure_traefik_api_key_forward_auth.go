@@ -12,10 +12,11 @@ import (
 	"github.com/mentatxx/traefik-api-key-forward-auth/internal/app"
 	"github.com/mentatxx/traefik-api-key-forward-auth/internal/configuration"
 	"github.com/mentatxx/traefik-api-key-forward-auth/internal/database"
+	"github.com/mentatxx/traefik-api-key-forward-auth/internal/handler"
+	"github.com/mentatxx/traefik-api-key-forward-auth/internal/repository"
 	"github.com/mentatxx/traefik-api-key-forward-auth/models"
 	"github.com/mentatxx/traefik-api-key-forward-auth/restapi/middlewares"
 	"github.com/mentatxx/traefik-api-key-forward-auth/restapi/operations"
-	"github.com/mentatxx/traefik-api-key-forward-auth/restapi/operations/key"
 )
 
 //go:generate swagger generate server --target ../../traefik-api-key-forward-auth --name TraefikAPIKeyForwardAuth --spec ../swagger/swagger.yml --principal AuthPrincipal
@@ -61,9 +62,12 @@ func configureAPI(api *operations.TraefikAPIKeyForwardAuthAPI) http.Handler {
 	// Example:
 	// api.APIAuthorizer = security.Authorized()
 
-	api.KeyAddKeyHandler = key.AddKeyHandlerFunc(key.AddKeyHandlerImpl)
-	api.KeyDeleteKeyHandler = key.DeleteKeyHandlerFunc(key.DeleteKeyHandlerImpl)
-	api.KeyGetKeysHandler = key.GetKeysHandlerFunc(key.GetKeysHandlerImpl)
+	appInstance := app.Get()
+	keysHandler := handler.NewKeysHandler(appInstance.KeysRepository)
+
+	api.KeyAddKeyHandler = keysHandler.KeyAddKeyHandler
+	api.KeyDeleteKeyHandler = keysHandler.KeyDeleteKeyHandler
+	api.KeyGetKeysHandler = keysHandler.KeyGetKeysHandler
 
 	api.PreServerShutdown = func() {}
 
@@ -82,7 +86,7 @@ func configureApp() {
 		panic(err)
 	}
 	app.DB = gormDb
-
+	app.KeysRepository = repository.NewKeysRepository(gormDb)
 }
 
 // The TLS configuration before HTTPS server starts.

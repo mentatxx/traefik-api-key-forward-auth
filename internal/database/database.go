@@ -18,7 +18,9 @@ const (
 	redisLockKey = "db_migration_lock"
 )
 
-func migrateWithLock(configuration *configuration.Configuration, database *gorm.DB) error {
+type Database = gorm.DB
+
+func migrateWithLock(configuration *configuration.Configuration, database *Database) error {
 	if configuration.Cache.HasRedis {
 
 		// Initialize Redis client for locking
@@ -49,7 +51,7 @@ func migrateWithLock(configuration *configuration.Configuration, database *gorm.
 	return nil
 }
 
-func Connect(config *configuration.Configuration) (*gorm.DB, error) {
+func Connect(config *configuration.Configuration) (*Database, error) {
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{

@@ -2,12 +2,14 @@ package app
 
 import (
 	"github.com/mentatxx/traefik-api-key-forward-auth/internal/configuration"
-	"gorm.io/gorm"
+	"github.com/mentatxx/traefik-api-key-forward-auth/internal/database"
+	"github.com/mentatxx/traefik-api-key-forward-auth/internal/repository"
 )
 
 type App struct {
-	DB     *gorm.DB
-	Config *configuration.Configuration
+	DB             *database.Database
+	Config         *configuration.Configuration
+	KeysRepository repository.KeysRepository
 }
 
 var appInstance *App
