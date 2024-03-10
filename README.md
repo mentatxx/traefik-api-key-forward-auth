@@ -82,6 +82,13 @@ The ForwardAuth middleware delegates authentication to an external service. If t
     2.1.3 DELETE `/api/key/{id}`
     Deletes API Key by given id
 
+### Swagger / OpenAPI
+
+`traefik-api-key-forward-auth` is contract-first.
+If you want to update API, you need to update `swagger/swagger.yml` file describing the contract. 
+The project uses [Go Swagger](https://github.com/go-swagger/go-swagger) framework.
+You can generate corresponding models with `make generate-server` command and then edit `restapi/configure_traefik_api_key_forward_auth.go` file. API handlers are placed in `internal/handler` folder
+
 ## Configuration
 
 Configuration is provided with environment variables:

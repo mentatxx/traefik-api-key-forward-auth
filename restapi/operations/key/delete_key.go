@@ -34,7 +34,7 @@ func NewDeleteKey(ctx *middleware.Context, handler DeleteKeyHandler) *DeleteKey 
 /*
 	DeleteKey swagger:route DELETE /key/{id} key deleteKey
 
-Get filtered key list
+Delete key by ID
 */
 type DeleteKey struct {
 	Context *middleware.Context

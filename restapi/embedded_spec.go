@@ -143,7 +143,7 @@ func init() {
         "tags": [
           "key"
         ],
-        "summary": "Get filtered key list",
+        "summary": "Delete key by ID",
         "operationId": "deleteKey",
         "parameters": [
           {
@@ -377,7 +377,7 @@ func init() {
         "tags": [
           "key"
         ],
-        "summary": "Get filtered key list",
+        "summary": "Delete key by ID",
         "operationId": "deleteKey",
         "parameters": [
           {

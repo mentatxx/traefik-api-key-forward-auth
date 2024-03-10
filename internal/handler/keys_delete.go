@@ -8,5 +8,9 @@ import (
 )
 
 func DeleteKeyHandlerImpl(repo repository.KeysRepository, params key.DeleteKeyParams, principal *models.AuthPrincipal) middleware.Responder {
-	return middleware.NotImplemented("operation key.DeleteKey has not yet been implemented")
+	error := repo.MarkAsDeletedByID(params.ID)
+	if error != nil {
+		return middleware.Error(500, error)
+	}
+	return key.NewDeleteKeyOK()
 }

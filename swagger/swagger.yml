@@ -80,7 +80,7 @@ paths:
     delete:
       tags:
       - "key"
-      summary: "Get filtered key list"
+      summary: "Delete key by ID"
       description: ""
       operationId: "deleteKey"
       consumes:
